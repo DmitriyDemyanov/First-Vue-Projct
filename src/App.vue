@@ -1,18 +1,35 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <BudgerList :list="list"/>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+
+import BudgerList from '@/components/BudgetList'
+
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
-  }
+    BudgerList,
+  },
+  data: () => ({
+    list: {
+      1: {
+        type: 'INCOME',
+        value: 100,
+        comment:  'Some comment',
+        id: 1,
+      },
+      2: {
+        type: 'OUTCOME',
+        value: -50,
+        comment:  'Some outcome comment',
+        id: 2,
+      }
+    }
+  })
 }
 </script>
 
