@@ -30,25 +30,29 @@ export default {
 
   name: "FormBalance",
 
-  data: () => ({
-   formData: {
-    type: 'INCOME',
-    comment: '',
-    value: 0,
-   },
-   rules: {
-    type: [
-      { required: true, message: 'Please select type', trigger: 'blur' },
-    ],
-    comment: [
-      { required: true, message: 'Please input type', trigger: 'blur' }
-    ],
-    value: [
-    { required: true, message: 'Please input value', trigger: 'blur' },
-    { type: 'number', message: 'Value mast be a number', trigger: 'change' }
-    ]
-   }
-  }),
+  data() {
+    return {
+      formData: {
+        type: 'INCOME',
+        comment: '',
+        value: null,
+      },
+      rules: {
+        type: [
+          { required: true, message: 'Please select type', trigger: 'blur' },
+        ],
+        comment: [
+          { required: true, message: 'Please input type', trigger: 'blur' }
+        ],
+        value: [
+          { required: true, message: 'Please input value', trigger: 'blur' },
+          { type: 'number', message: 'Value mast be a number', trigger: 'change' },
+          { validator: this.validateValue, trigger: 'blur' }
+        ]
+      }
+    }
+
+  },
   methods: {
     onSubmit() {
       this.$refs.addItemForm.validate((valid) => {
@@ -57,6 +61,17 @@ export default {
           this.$refs.addItemForm.resetFields();
         }
       })
+    },
+    validateValue(rule, value, cb) {
+      if (value === 0) {
+        cb(new Error('Please input a number not a 0'));
+      } else {
+        cb();
+      }
+
+      console.log("111111111", rule);
+      console.log("22222", value);
+
     }
   }
 

@@ -3,6 +3,7 @@
     <FormBalance @submitForm="onsubmitform"/>
     <TotalBalance :total='totalBalance'/>
     <BudgetList :list="list" @deleteItem="onDeleteItem"/>
+    
   </div>
 </template>
 
@@ -38,7 +39,8 @@ export default {
   computed: {
     totalBalance() {
       // цепочка вопрос
-      return Object.values(this.list).reduce((acc, item) => acc + item.value, 0);
+      console.log(Object.values(this.list));
+      return Object.values(this.list).reduce((acc, item) => acc + item.value,0);
     },
   },
   methods: {
@@ -46,6 +48,10 @@ export default {
       this.$delete(this.list, id);
     },
     onsubmitform(data) {
+      console.log("----", data);
+      if (data.type === 'OUTCOME' && data.value > 0) {
+        data.value *= -1;
+      }
       const newObj = {
         ...data,
         id: String(Math.random())
@@ -66,3 +72,5 @@ export default {
   margin-top: 60px;
 }
 </style>
+
+
