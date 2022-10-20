@@ -1,6 +1,6 @@
 import Vue from "vue";
 import lang from 'element-ui/lib/locale/lang/en';
-import  locale  from 'element-ui/lib/locale';
+import locale  from 'element-ui/lib/locale';
 import 'element-ui/packages/theme-chalk/lib/index.css';
 import {
   Button,
@@ -10,6 +10,7 @@ import {
   Select,
   Option,
   Alert,
+  Input
 } from 'element-ui';
 
 const elements = [
@@ -19,7 +20,8 @@ const elements = [
   FormItem,
   Select,
   Option,
-  Alert
+  Alert,
+  Input
 ];
 
 locale.use(lang);

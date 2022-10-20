@@ -1,18 +1,23 @@
 <template>
   <div id="app">
-    <BudgerList :list="list"/>
+    <FormBalance @submitForm="onsubmitform"/>
+    <TotalBalance :total='totalBalance'/>
+    <BudgetList :list="list" @deleteItem="onDeleteItem"/>
   </div>
 </template>
 
 <script>
 
-import BudgerList from '@/components/BudgetList'
-
+import BudgetList from '@/components/BudgetList'
+import TotalBalance from '@/components/TotalBalance'
+import FormBalance from '@/components/FormBalance'
 
 export default {
   name: 'App',
   components: {
-    BudgerList,
+    BudgetList,
+    TotalBalance,
+    FormBalance,
   },
   data: () => ({
     list: {
@@ -29,8 +34,26 @@ export default {
         id: 2,
       }
     }
-  })
-}
+  }),
+  computed: {
+    totalBalance() {
+      // цепочка вопрос
+      return Object.values(this.list).reduce((acc, item) => acc + item.value, 0);
+    },
+  },
+  methods: {
+    onDeleteItem(id) {
+      this.$delete(this.list, id);
+    },
+    onsubmitform(data) {
+      const newObj = {
+        ...data,
+        id: String(Math.random())
+      };
+      this.$set(this.list, newObj.id, newObj);
+    }
+  },
+};
 </script>
 
 <style>

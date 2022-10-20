@@ -3,11 +3,11 @@
 <div class="budget-list-wrap">
 
   <ElCard :header="header">
-    <template v-if="!isEmpty">
+    <template v-if="isListExist">
       <div class="list-item" v-for="(item, prop) in list" :key="prop">
       <span class="budget-comment">{{item.comment}}</span>
       <span class="budget-value">{{item.value}}</span>
-      <ElButton type="danger" size="mini">Delete</ElButton>
+      <ElButton type="danger" size="mini" @click="deleteItem(item.id)">Delete</ElButton>
     </div>
     </template>
     <ElAlert v-else type="info" :title="emptyTitle" :closable="false"/>
@@ -25,12 +25,17 @@ export default {
     default: () => ({}),
   },
   data: () => ({
-    header: 'Budger List',
-    emptyTitle: 'EMPTY LIST'
+    header: 'Budget List',
+    emptyTitle: 'EMPTY LIST',
   }),
   computed: {
-    isEmpty() {
-      return !Object.keys(this.list).length;
+    isListExist() {
+      return Boolean(Object.keys(this.list).length);
+    },
+  },
+  methods: {
+    deleteItem(id) {
+      this.$emit('deleteItem', id);                 // ?????????
     }
   }
 };
