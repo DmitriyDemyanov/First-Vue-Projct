@@ -17,8 +17,8 @@ export default {
     },
   },
   computed: {
-    changeColor(value) {
-      return {'color-red': value.total < 0, 'color-green': value.total  > 0, 'color-black': value.total  === 0}
+    changeColor() {
+      return {'color-red': this.total < 0, 'color-green': this.total  > 0, 'color-black': this.total  === 0}
     }
   }
 }

@@ -4,7 +4,7 @@
 
     <ElCard :header="header">
       <template v-if="isListExist">
-        <BudgetListItem v-for="(zapis, key) in list" :key="key" :item="zapis" @deleteItem="deleteItem"/>
+        <BudgetListItem v-for="(zapis, idx) in listCollection" :key="idx" :item="zapis" @deleteItem="deleteItem"/>
       </template>
       <ElAlert v-else type="info" :title="emptyTitle" :closable="false"/>
     </ElCard>
@@ -22,8 +22,10 @@ export default {
     BudgetListItem,
   },
   props: {
-    list: Object,
-    default: () => ({}),
+    listCollection: {
+      type: Array,
+      default: () => ([])
+    }
   },
   data: () => ({
     header: 'Budget List',
@@ -31,7 +33,7 @@ export default {
   }),
   computed: {
     isListExist() {
-      return Boolean(Object.keys(this.list).length);
+      return Boolean(this.listCollection.length);
     },
   },
   methods: {

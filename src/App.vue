@@ -2,8 +2,9 @@
   <div id="app">
     <FormBalance @submitForm="onsubmitform"/>
     <TotalBalance :total='totalBalance'/>
-    <BudgetList :list="list" @deleteItem="onDeleteItem"/>
-    
+    <BudgetListControl @sortList="onSortList"/>
+    <BudgetList :listCollection="listCollection" @deleteItem="onDeleteItem"/>
+
   </div>
 </template>
 
@@ -11,6 +12,7 @@
 
 import BudgetList from '@/components/BudgetList'
 import TotalBalance from '@/components/TotalBalance'
+import BudgetListControl from '@/components/BudgetListControl'
 import FormBalance from '@/components/FormBalance'
 
 export default {
@@ -19,6 +21,7 @@ export default {
     BudgetList,
     TotalBalance,
     FormBalance,
+    BudgetListControl,
   },
   data: () => ({
     list: {
@@ -34,21 +37,39 @@ export default {
         comment:  'Some outcome comment',
         id: 2,
       }
-    }
+    },
+    sortBy: null,
   }),
   computed: {
     totalBalance() {
       // цепочка вопрос
-      console.log(Object.values(this.list));
       return Object.values(this.list).reduce((acc, item) => acc + item.value,0);
+    },
+    listCollection() {
+      console.log(Object.values(this.list));
+      const list = Object.values(this.list);
+      if (this.sortBy === 'asc') {
+        return list.sort((a, b) => a.value - b.value);
+      }
+      if (this.sortBy === 'desc') {
+        return list.sort((a, b) => b.value - a.value);
+      }
+      return list;
     },
   },
   methods: {
     onDeleteItem(id) {
-      this.$delete(this.list, id);
+      if (confirm('Are you sure')) {
+        this.$delete(this.list, id);
+      }
     },
+
+    onSortList(sortBy) {
+      console.log(sortBy);
+      this.sortBy = sortBy;
+    },
+
     onsubmitform(data) {
-      console.log("----", data);
       if (data.type === 'OUTCOME' && data.value > 0) {
         data.value *= -1;
       }
