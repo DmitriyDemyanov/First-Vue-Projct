@@ -59,7 +59,7 @@ export default {
   },
   methods: {
     onDeleteItem(id) {
-      if (confirm('Are you sure')) {
+      if (confirm('Are you sure ?')) {
         this.$delete(this.list, id);
       }
     },

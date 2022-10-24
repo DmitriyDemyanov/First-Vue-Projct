@@ -1,7 +1,7 @@
 <template>
   <div class="list-item">
     <span class="budget-comment">{{item.comment}}</span>
-    <span class="budget-value">{{item.value}}</span>
+    <span :class="changeColorValue" class="budget-value">{{item.value}}</span>
     <i :class="[iconArrow, 'item-icon']"></i>
     <ElButton type="danger" size="mini" @click="deleteItem(item.id)">Delete</ElButton>
   </div>
@@ -26,9 +26,12 @@ export default {
   computed: {
     iconArrow() {
       return this.item.value > 0 ? 'el-icon-top' : 'el-icon-bottom';
+    },
+    changeColorValue() {
+      return { 'color-green' :  this.item.value > 0, 'color-red' : this.item.value < 0}
     }
   }
-}
+};
 
 </script>
 
@@ -63,5 +66,12 @@ export default {
   font-size: 22px;
   margin-right: 10px;
 }
+.color-red {
+  color: red;
+}
+.color-green {
+  color: green;
+}
+
 
 </style>
