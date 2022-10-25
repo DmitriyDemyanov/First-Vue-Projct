@@ -2,7 +2,7 @@
   <div id="app">
     <FormBalance @submitForm="onsubmitform"/>
     <TotalBalance :total='totalBalance'/>
-    <BudgetListControl @sortList="onSortList"/>
+    <BudgetListControl @sortList="onSortList" @filterList="onFilterList"/>
     <BudgetList :listCollection="listCollection" @deleteItem="onDeleteItem"/>
 
   </div>
@@ -39,6 +39,7 @@ export default {
       }
     },
     sortBy: null,
+    filterBy: 'all',
   }),
   computed: {
     totalBalance() {
@@ -47,13 +48,21 @@ export default {
     },
     listCollection() {
       console.log(Object.values(this.list));
-      const list = Object.values(this.list);
-      if (this.sortBy === 'asc') {
-        return list.sort((a, b) => a.value - b.value);
+      let list = Object.values(this.list);
+
+      console.log(this.filterBy);
+
+      if (this.filterBy !== 'all') {
+        list = list.filter((el) => el.type === this.filterBy.toUpperCase());
       }
-      if (this.sortBy === 'desc') {
+
+      if (this.sortBy === 'asc') {
         return list.sort((a, b) => b.value - a.value);
       }
+      if (this.sortBy === 'desc') {
+        return list.sort((a, b) => a.value - b.value);
+      }
+
       return list;
     },
   },
@@ -64,9 +73,14 @@ export default {
       }
     },
 
-    onSortList(sortBy) {
-      console.log(sortBy);
-      this.sortBy = sortBy;
+    onSortList(type) {
+      console.log(type);
+      this.sortBy = type;
+    },
+
+    onFilterList(type) {
+      this.filterBy = type;
+
     },
 
     onsubmitform(data) {

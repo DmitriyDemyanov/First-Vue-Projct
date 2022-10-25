@@ -23,7 +23,7 @@ export default {
       this.$emit('sortList',type);
     },
     filterList(type) {
-      console.log(type);
+      this.$emit('filterList', type)
 
     }
   },

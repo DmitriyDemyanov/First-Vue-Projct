@@ -28,7 +28,7 @@ export default {
       return this.item.value > 0 ? 'el-icon-top' : 'el-icon-bottom';
     },
     changeColorValue() {
-      return { 'color-green' :  this.item.value > 0, 'color-red' : this.item.value < 0}
+      return this.item.value > 0 ? 'color-green' : 'color-red';
     }
   }
 };

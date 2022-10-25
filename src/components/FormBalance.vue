@@ -64,10 +64,12 @@ export default {
     },
     validateValue(rule, value, cb) {
       if (value === 0) {
-        cb(new Error('Please input a number not a 0'));
-      } else {
-        cb();
+        return cb(new Error('Please input a number not a 0'));
       }
+      if (value < 0 && this.formData.type === 'INCOME') {
+        return cb(new Error('INCOME cant be less 0 !'));
+      }
+      cb();
 
       console.log("111111111", rule);
       console.log("22222", value);
