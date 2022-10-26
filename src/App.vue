@@ -1,19 +1,21 @@
 <template>
   <div id="app">
-    <FormBalance @submitForm="onsubmitform"/>
+    <FormBalance />
     <TotalBalance :total='totalBalance'/>
-    <BudgetListControl @sortList="onSortList" @filterList="onFilterList"/>
-    <BudgetList :listCollection="listCollection" @deleteItem="onDeleteItem"/>
+    <BudgetListControl />
+    <BudgetList />
 
   </div>
 </template>
 
 <script>
 
-import BudgetList from '@/components/BudgetList'
-import TotalBalance from '@/components/TotalBalance'
-import BudgetListControl from '@/components/BudgetListControl'
-import FormBalance from '@/components/FormBalance'
+import BudgetList from '@/components/BudgetList';
+import TotalBalance from '@/components/TotalBalance';
+import BudgetListControl from '@/components/BudgetListControl';
+import FormBalance from '@/components/FormBalance';
+
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'App',
@@ -24,75 +26,12 @@ export default {
     BudgetListControl,
   },
   data: () => ({
-    list: {
-      1: {
-        type: 'INCOME',
-        value: 100,
-        comment:  'Some comment',
-        id: 1,
-      },
-      2: {
-        type: 'OUTCOME',
-        value: -50,
-        comment:  'Some outcome comment',
-        id: 2,
-      }
-    },
-    sortBy: null,
-    filterBy: 'all',
   }),
   computed: {
+    ...mapGetters('balance', ['balanceList']),
     totalBalance() {
-      // цепочка вопрос
-      return Object.values(this.list).reduce((acc, item) => acc + item.value,0);
+      return this.balanceList.reduce((acc, item) => acc + item.value,0);
     },
-    listCollection() {
-      console.log(Object.values(this.list));
-      let list = Object.values(this.list);
-
-      console.log(this.filterBy);
-
-      if (this.filterBy !== 'all') {
-        list = list.filter((el) => el.type === this.filterBy.toUpperCase());
-      }
-
-      if (this.sortBy === 'asc') {
-        return list.sort((a, b) => b.value - a.value);
-      }
-      if (this.sortBy === 'desc') {
-        return list.sort((a, b) => a.value - b.value);
-      }
-
-      return list;
-    },
-  },
-  methods: {
-    onDeleteItem(id) {
-      if (confirm('Are you sure ?')) {
-        this.$delete(this.list, id);
-      }
-    },
-
-    onSortList(type) {
-      console.log(type);
-      this.sortBy = type;
-    },
-
-    onFilterList(type) {
-      this.filterBy = type;
-
-    },
-
-    onsubmitform(data) {
-      if (data.type === 'OUTCOME' && data.value > 0) {
-        data.value *= -1;
-      }
-      const newObj = {
-        ...data,
-        id: String(Math.random())
-      };
-      this.$set(this.list, newObj.id, newObj);
-    }
   },
 };
 </script>

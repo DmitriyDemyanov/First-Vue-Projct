@@ -26,6 +26,8 @@
 
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
 
   name: "FormBalance",
@@ -54,13 +56,20 @@ export default {
 
   },
   methods: {
+    ...mapActions('balance', ['addNewItem']),
     onSubmit() {
       this.$refs.addItemForm.validate((valid) => {
         if (valid) {
-          this.$emit('submitForm', { ...this.formData });
+          this.submitForm({ ...this.formData });
           this.$refs.addItemForm.resetFields();
         }
       })
+    },
+    submitForm(data) {
+      if (data.type === 'OUTCOME' && data.value > 0) {
+        data.value *= -1;
+      }
+      this.addNewItem(data);
     },
     validateValue(rule, value, cb) {
       if (value === 0) {
@@ -70,9 +79,6 @@ export default {
         return cb(new Error('INCOME cant be less 0 !'));
       }
       cb();
-
-      console.log("111111111", rule);
-      console.log("22222", value);
 
     }
   }

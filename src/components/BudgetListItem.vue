@@ -3,7 +3,7 @@
     <span class="budget-comment">{{item.comment}}</span>
     <span :class="changeColorValue" class="budget-value">{{item.value}}</span>
     <i :class="[iconArrow, 'item-icon']"></i>
-    <ElButton type="danger" size="mini" @click="deleteItem(item.id)">Delete</ElButton>
+    <ElButton type="danger" size="mini" @click="onDeleteItem(item.id)">Delete</ElButton>
   </div>
 </template>
 
@@ -12,6 +12,8 @@
 
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
   name: 'BudgetListItem',
   props: {
@@ -19,8 +21,11 @@ export default {
     default: () => ({})
   },
   methods: {
-    deleteItem(id) {
-      this.$emit('deleteItem', id);
+    ...mapActions('balance', ['deleteItem',]),
+    onDeleteItem(id) {
+      if (confirm('Are you sure ?')) {
+        this.deleteItem(id);
+      }
     },
   },
   computed: {

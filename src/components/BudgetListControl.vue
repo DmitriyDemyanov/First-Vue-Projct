@@ -16,14 +16,16 @@
 
 
 <script>
+import { mapActions } from 'vuex';
 export default {
   name: 'BudgetListControl',
   methods: {
-    sortList(type) {
-      this.$emit('sortList',type);
+    ...mapActions('balance',['setFilterValue', 'setSortValue']),
+    sortList(value) {
+      this.setSortValue(value);
     },
-    filterList(type) {
-      this.$emit('filterList', type)
+    filterList(title) {
+      this.setFilterValue(title)
 
     }
   },
